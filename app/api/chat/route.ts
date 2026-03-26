@@ -1,41 +1,34 @@
-import { google } from '@ai-sdk/google';
 import { streamText } from 'ai';
-import { run } from 'node:test';
-import { devNull } from 'os';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
 
-// Allow streaming responses up to 30 seconds
-export const maxDuration = 30;
+// 1. Anahtarı her türlü boşluk ve tırnaktan arındırıyoruz
+const rawKey = process.env.GOOGLE_GENERATION_AI_API_KEY || '';
+const apiKey = rawKey.replace(/['"]+/g, '').trim();
+
+// 2. Sadece Vercel AI SDK kullanıyoruz (Google'ın kendi SDK'sını sildik)
+const google = createGoogleGenerativeAI({
+  apiKey: apiKey,
+});
 
 export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
-    console.log("GOOGLE_GENERATION_AI_API_KEY", process.env.GOOGLE_GENERATION_AI_API_KEY);
-    if (!process.env.GOOGLE_GENERATION_AI_API_KEY) {
-      console.error('GOOGLE_GENERATION_AI_API_KEY is missing');
-    }
 
+    // 3. streamText ile temiz bir bağlantı kuruyoruz
     const result = await streamText({
-      model: google('gemini-1.5-pro'),
-      messages,
-      system: `
-        Sen "Luxoline Legal Assistant" adlı yapay zeka tabanlı bir hukuk araştırma asistanısın.
-        Görevin, hukuk uzmanlarına, avukatlara ve hukuk öğrencilerine araştırmalarında yardımcı olmaktır.
-        
-        Prensiplerin:
-        1. Uzman, profesyonel ve yardımcı bir ton kullan.
-        2. Yanıtlarında yapılandırılmış bir format (listeler, başlıklar) kullan.
-        3. Belirsiz durumlarda yasal riskleri ve profesyonel görüş ihtiyacını hatırlat.
-        4. Güncel mevzuat ve içtihat bilgilerine (bilgi dahilinde) atıfta bulun.
-        5. Her zaman Türkçe yanıt ver, ancak orijinal hukuki terimlerin (Latince vb.) parantez içinde kullanımına izin ver.
-      `,
+      model: google('gemini-1.5-flash'),
+      messages: messages,
+      system: `Sen "Luxoline Legal Assistant" adlı yapay zeka tabanlı bir hukuk araştırma asistanısın. Görevin, hukuk uzmanlarına, avukatlara ve hukuk öğrencilerine araştırmalarında yardımcı olmaktır. Profesyonel ve uzman bir dil kullan.`,
     });
-    console.log("result", result.toDataStreamResponse());
+    console.log(result.toDataStreamResponse())
+    // 4. Ön yüzün (useChat) beklediği doğru formatta stream (akış) dönüyoruz
     return result.toDataStreamResponse();
-  } catch (error) {
-    console.error('Chat API Error:', error);
-    return new Response(JSON.stringify({ error: 'An error occurred during chat generation.' }), {
+
+  } catch (error: any) {
+    console.error("API HATASI:", error);
+    return new Response(JSON.stringify({ error: error.message || "Bilinmeyen hata" }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json' }
     });
   }
 }

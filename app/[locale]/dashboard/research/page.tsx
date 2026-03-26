@@ -9,13 +9,6 @@ export default function ResearchPage() {
 
   const { messages, input, handleInputChange, handleSubmit, setMessages, append, isLoading, error } = useChat({
     api: '/api/chat',
-    initialMessages: [
-      {
-        id: 'initial-ai-msg',
-        role: 'assistant',
-        content: t('assistantHello'),
-      },
-    ],
     onError: (err) => {
       console.error('Chat error:', err);
     }
