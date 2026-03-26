@@ -1,13 +1,25 @@
 'use client';
 
-import { useState } from 'react';
-import { Send, Bot, User, Sparkles, Scale, Clock, ChevronRight } from 'lucide-react';
+import { Send, Bot, User, Sparkles, Scale, Clock, ChevronRight, Loader2, AlertCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-
-type Message = { role: 'user' | 'assistant'; content: string; time: string };
+import { useChat } from '@ai-sdk/react';
 
 export default function ResearchPage() {
   const t = useTranslations('Research');
+
+  const { messages, input, handleInputChange, handleSubmit, setMessages, append, isLoading, error } = useChat({
+    api: '/api/chat',
+    initialMessages: [
+      {
+        id: 'initial-ai-msg',
+        role: 'assistant',
+        content: t('assistantHello'),
+      },
+    ],
+    onError: (err) => {
+      console.error('Chat error:', err);
+    }
+  });
 
   const pastSessions = [
     { title: t('ps1Title'), date: t('ps1Time'), messages: 8 },
@@ -24,31 +36,10 @@ export default function ResearchPage() {
     t('sug4'),
   ];
 
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: 'assistant',
-      content: t('assistantHello'),
-      time: 'now',
-    },
-  ]);
-  const [input, setInput] = useState('');
-
   const sendMessage = (text?: string) => {
-    const query = text || input.trim();
-    if (!query) return;
-
-    const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const newMessages: Message[] = [...messages, { role: 'user', content: query, time: now }];
-    setMessages(newMessages);
-    setInput('');
-
-    setTimeout(() => {
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: t('placeholderResponse'),
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      }]);
-    }, 800);
+    if (text) {
+      append({ id: Date.now().toString(), role: 'user', content: text });
+    }
   };
 
   return (
@@ -67,7 +58,7 @@ export default function ResearchPage() {
       }}>
         <div style={{ padding: '16px', borderBottom: '1px solid var(--border)' }}>
           <button
-            onClick={() => setMessages([{ role: 'assistant', content: t('assistantNew'), time: 'now' }])}
+            onClick={() => setMessages([{ id: Date.now().toString(), role: 'assistant', content: t('assistantNew') }])}
             style={{
               width: '100%',
               background: 'linear-gradient(135deg, var(--primary), var(--primary-light))',
@@ -105,8 +96,8 @@ export default function ResearchPage() {
               justifyContent: 'space-between',
               gap: '6px',
             }}
-              onMouseOver={e => (e.currentTarget as HTMLElement).style.background = 'var(--surface-2)'}
-              onMouseOut={e => (e.currentTarget as HTMLElement).style.background = 'none'}
+              onMouseOver={e => { (e.currentTarget as HTMLElement).style.background = 'var(--surface-2)'; }}
+              onMouseOut={e => { (e.currentTarget as HTMLElement).style.background = 'none'; }}
             >
               <div style={{ flex: 1, overflow: 'hidden' }}>
                 <div style={{ fontSize: '0.8rem', color: 'var(--foreground)', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{s.title}</div>
@@ -139,7 +130,7 @@ export default function ResearchPage() {
         {/* Messages */}
         <div style={{ flex: 1, overflowY: 'auto', padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {messages.map((m, i) => (
-            <div key={i} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', flexDirection: m.role === 'user' ? 'row-reverse' : 'row' }}>
+            <div key={m.id} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', flexDirection: m.role === 'user' ? 'row-reverse' : 'row' }}>
               <div style={{
                 width: '32px',
                 height: '32px',
@@ -162,16 +153,61 @@ export default function ResearchPage() {
                 lineHeight: 1.65,
                 border: m.role === 'user' ? 'none' : '1px solid var(--border)',
                 whiteSpace: 'pre-wrap',
+                boxShadow: 'var(--shadow-sm)',
               }}>
                 {m.content}
-                <div style={{ fontSize: '0.68rem', color: m.role === 'user' ? 'rgba(255,255,255,0.6)' : 'var(--foreground-muted)', marginTop: '6px' }}>{m.time}</div>
+                {m.role === 'assistant' && i === messages.length - 1 && isLoading && (
+                  <span style={{ display: 'inline-block', width: '2px', height: '1rem', background: 'var(--primary)', marginLeft: '4px', filter: 'drop-shadow(0 0 4px var(--primary))', animation: 'opacity 0.8s infinite' }} />
+                )}
               </div>
             </div>
           ))}
+
+          {error && (
+            <div style={{
+              margin: '0 auto',
+              padding: '12px 16px',
+              borderRadius: '8px',
+              background: 'rgba(239, 68, 68, 0.1)',
+              border: '1px solid rgba(239, 68, 68, 0.2)',
+              color: '#ef4444',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              fontSize: '0.85rem',
+              maxWidth: '80%',
+            }}>
+              <AlertCircle size={16} />
+              <div style={{ wordBreak: 'break-word' }}>
+                <strong style={{ marginRight: '4px' }}>Hata:</strong>
+                Yapay zeka yanıt veremedi. Lütfen **.env.local** dosyanızda **GOOGLE_GENERATION_AI_API_KEY** anahtarının tanımlı olduğundan emin olun.
+              </div>
+            </div>
+          )}
+
+          {isLoading && messages[messages.length - 1]?.role === 'user' && !error && (
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+              <div style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '8px',
+                background: 'linear-gradient(135deg, var(--primary), var(--accent))',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}>
+                <Loader2 size={15} color="#fff" style={{ animation: 'spin 1s linear infinite' }} />
+              </div>
+              <div style={{ background: 'var(--surface-2)', borderRadius: '4px 12px 12px 12px', padding: '12px 16px', border: '1px solid var(--border)' }}>
+                <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} />
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Suggestions */}
-        {messages.length <= 1 && (
+        {messages.length <= 1 && !isLoading && (
           <div style={{ padding: '0 24px 16px', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {suggestions.map((s, i) => (
               <button key={i} onClick={() => sendMessage(s)} style={{
@@ -194,13 +230,12 @@ export default function ResearchPage() {
           </div>
         )}
 
-        {/* Input */}
-        <div style={{ padding: '16px 24px', borderTop: '1px solid var(--border)' }}>
+        <form onSubmit={handleSubmit} style={{ padding: '16px 24px', borderTop: '1px solid var(--border)' }}>
           <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-end' }}>
             <textarea
               value={input}
-              onChange={e => setInput(e.target.value)}
-              onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }}
+              onChange={handleInputChange}
+              onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSubmit(e as any); } }}
               placeholder={t('inputPlaceholder')}
               rows={2}
               style={{
@@ -217,33 +252,38 @@ export default function ResearchPage() {
                 lineHeight: 1.5,
                 transition: 'border-color 0.2s',
               }}
-              onFocus={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--primary)'}
-              onBlur={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'}
+              onFocus={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--primary)'; }}
+              onBlur={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; }}
             />
             <button
-              onClick={() => sendMessage()}
+              type="submit"
+              disabled={isLoading || !input.trim()}
               style={{
                 background: 'linear-gradient(135deg, var(--primary), var(--primary-light))',
                 color: '#fff',
                 border: 'none',
                 borderRadius: '12px',
                 padding: '12px 16px',
-                cursor: 'pointer',
+                cursor: (isLoading || !input.trim()) ? 'not-allowed' : 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px',
+                gap: '8px',
                 fontSize: '0.875rem',
                 fontWeight: 600,
                 transition: 'opacity 0.2s',
                 flexShrink: 0,
+                opacity: (isLoading || !input.trim()) ? 0.6 : 1,
               }}
-              onMouseOver={e => (e.currentTarget as HTMLElement).style.opacity = '0.9'}
-              onMouseOut={e => (e.currentTarget as HTMLElement).style.opacity = '1'}
+              onMouseOver={e => { if (!isLoading) (e.currentTarget as HTMLElement).style.opacity = '0.9'; }}
+              onMouseOut={e => { if (!isLoading) (e.currentTarget as HTMLElement).style.opacity = '1'; }}
             >
-              <Send size={16} /> {t('btnSend')}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {isLoading ? <Loader2 size={16} key="loader" style={{ animation: 'spin 1s linear infinite' }} /> : <Send size={16} key="send" />}
+              </div>
+              <span key="btnText">{t('btnSend')}</span>
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
