@@ -1,0 +1,39 @@
+{
+  "Index": {
+    "title": "Ana Sayfa",
+    "comingSoon": "Yapay Zeka Araçları Entegrasyonu Yakında",
+    "heroTitle1": "Akıllı",
+    "heroTitle2": "Hukuk Asistanınız",
+    "heroDesc": "Daha akıllıca araştırın, net bir şekilde mantık yürütün ve hukuki bilginizi düzenleyin. Hukuk öğrencileri ve profesyonelleri için tasarlandı.",
+    "getStarted": "Ücretsiz Başlayın",
+    "learnMore": "Daha Fazla Bilgi",
+    "featuresTitle": "Hukuk araştırması için ihtiyacınız olan her şey",
+    "featuresDesc": "Hukuk zihinleri için tasarlanmış, herkes için basitleştirilmiş güçlü özellikler.",
+    "useCasesTitle": "Yolculuğunuz için tasarlandı",
+    "useCasesDesc": "Öğrenci veya profesyonel olun, LexAI size uyum sağlar.",
+    "ctaTitle": "Daha akıllıca araştırmaya hazır mısınız?",
+    "ctaDesc": "LexAI kullanan binlerce hukuk öğrencisi ve profesyoneline katılın.",
+    
+    "feature1Title": "Yapay Zeka ile Hukuki Araştırma",
+    "feature1Desc": "Karmaşık hukuki sorular sorun ve yapılandırılmış, kaynaklı cevaplar alın.",
+    "feature2Title": "Akıllı Not Alma",
+    "feature2Desc": "Hukuki araştırmalarınızı kategoriler ve etiketlerle düzenli notlara dönüştürün.",
+    "feature3Title": "Bilgi Bankası",
+    "feature3Desc": "Kişisel hukuk kütüphanenizi oluşturun. Anında arayın ve filtreleyin.",
+    "feature4Title": "Güvenilir & Güvenli",
+    "feature4Desc": "Gerçekler, hukuki ilkeler ve varsayımlar arasında net ayrım.",
+    
+    "useCase1Title": "Hukuk Öğrencileri",
+    "useCase1Desc": "Vaka analizlerini basitleştirin ve ders notlarınızı düzenleyin.",
+    "useCase2Title": "Hukuk Profesyonelleri",
+    "useCase2Desc": "Araştırma iş akışlarını hızlandırın ve arama yapabileceğiniz bir bilgi bankası oluşturun.",
+    "useCase3Title": "Genel Kamu",
+    "useCase3Desc": "Yasal haklarınızı anlayın ve hukuki durumlar için yapılandırılmış açıklamalar alın.",
+    "popular": "Popüler",
+    
+    "stat1Label": "İncelenen Belge",
+    "stat2Label": "Kapsanan Alan",
+    "stat3Label": "Kullanıcı Memnuniyeti",
+    "stat4Label": "Her Zaman Erişilebilir"
+  }
+}

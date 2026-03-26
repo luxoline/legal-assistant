@@ -1,0 +1,39 @@
+{
+  "Index": {
+    "title": "Home",
+    "comingSoon": "AI Tools Integration Coming Soon",
+    "heroTitle1": "Your Intelligent",
+    "heroTitle2": "Legal Assistant",
+    "heroDesc": "Research smarter, reason clearly, and organize your legal knowledge. Built for law students and professionals.",
+    "getStarted": "Get Started Free",
+    "learnMore": "Learn More",
+    "featuresTitle": "Everything you need to research the law",
+    "featuresDesc": "Powerful features designed for legal minds, made simple for everyone.",
+    "useCasesTitle": "Built for your journey",
+    "useCasesDesc": "Whether you're a student or professional, LexAI adapts to you.",
+    "ctaTitle": "Ready to research smarter?",
+    "ctaDesc": "Join thousands of law students and professionals already using LexAI.",
+    
+    "feature1Title": "AI Legal Research",
+    "feature1Desc": "Ask complex legal questions and receive structured, sourced answers.",
+    "feature2Title": "Smart Note-Taking",
+    "feature2Desc": "Organize your legal research into structured notes with categories and tags.",
+    "feature3Title": "Knowledge Base",
+    "feature3Desc": "Build a personal library of legal knowledge. Search and filter instantly.",
+    "feature4Title": "Reliable & Safe",
+    "feature4Desc": "Clear distinction between facts, legal principles, and assumptions.",
+    
+    "useCase1Title": "Law Students",
+    "useCase1Desc": "Simplify case analysis, organize lecture notes, and research faster.",
+    "useCase2Title": "Legal Professionals",
+    "useCase2Desc": "Streamline research workflows and extract key points from documents.",
+    "useCase3Title": "General Public",
+    "useCase3Desc": "Understand your legal rights and get structured explanations.",
+    "popular": "Popular",
+    
+    "stat1Label": "Legal documents analyzed",
+    "stat2Label": "Legal domains covered",
+    "stat3Label": "User satisfaction",
+    "stat4Label": "Always available"
+  }
+}
