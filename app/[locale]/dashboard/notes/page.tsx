@@ -1,86 +1,41 @@
 'use client';
 
 import { useState } from 'react';
-import { Plus, Search, FileText, Tag, Calendar, X } from 'lucide-react';
-
-const categories = ['All', 'Contract Law', 'Criminal Law', 'Constitutional Law', 'Tort Law', 'EU Law', 'Tax Law'];
-
-const categoryColors: Record<string, string> = {
-  'Contract Law': '#1E3A5F',
-  'Criminal Law': '#C62828',
-  'Constitutional Law': '#7B1FA2',
-  'Tort Law': '#2E7D32',
-  'EU Law': '#1565C0',
-  'Tax Law': '#E65100',
-};
-
-const sampleNotes = [
-  {
-    id: 1,
-    title: 'Elements of a Valid Contract',
-    category: 'Contract Law',
-    date: 'Mar 26, 2026',
-    excerpt: 'A valid contract requires: offer, acceptance, consideration, intention to create legal relations, and capacity of parties.',
-    tags: ['contract', 'offer', 'acceptance', 'consideration'],
-    keyPoints: 5,
-  },
-  {
-    id: 2,
-    title: 'Mens Rea & Criminal Intent',
-    category: 'Criminal Law',
-    date: 'Mar 25, 2026',
-    excerpt: 'Mens rea refers to the mental state or intention of a person while committing a crime. Types: intention, recklessness, negligence.',
-    tags: ['criminal', 'intent', 'mens rea'],
-    keyPoints: 7,
-  },
-  {
-    id: 3,
-    title: 'Duty of Care in Negligence',
-    category: 'Tort Law',
-    date: 'Mar 24, 2026',
-    excerpt: 'The Donoghue v Stevenson case established the neighbour principle. Duty of care exists where harm is reasonably foreseeable.',
-    tags: ['negligence', 'duty of care', 'tort'],
-    keyPoints: 4,
-  },
-  {
-    id: 4,
-    title: 'GDPR Article 17 — Right to Erasure',
-    category: 'EU Law',
-    date: 'Mar 23, 2026',
-    excerpt: 'Data subjects have the right to erasure (right to be forgotten) under specific conditions outlined in GDPR Article 17.',
-    tags: ['GDPR', 'data protection', 'EU law'],
-    keyPoints: 6,
-  },
-  {
-    id: 5,
-    title: 'Freedom of Speech — Constitutional Limits',
-    category: 'Constitutional Law',
-    date: 'Mar 22, 2026',
-    excerpt: 'While freedom of speech is a fundamental right, it is subject to limitations when it conflicts with other rights or public order.',
-    tags: ['constitutional', 'free speech', 'rights'],
-    keyPoints: 8,
-  },
-  {
-    id: 6,
-    title: 'Capital Gains Tax Principles',
-    category: 'Tax Law',
-    date: 'Mar 20, 2026',
-    excerpt: 'Capital gains tax is applied on the profit from selling an asset. Exemptions and rates vary by jurisdiction and asset type.',
-    tags: ['tax', 'capital gains', 'assets'],
-    keyPoints: 5,
-  },
-];
+import { FileText, Search, Plus, Filter, MoreVertical, Tag, X, Calendar } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export default function NotesPage() {
+  const t = useTranslations('Notes');
+
+  const categories = [t('all'), t('cat1'), t('cat2'), t('cat3'), t('cat4'), t('cat5'), t('cat6')];
+
+  const categoryColors: Record<string, string> = {
+    [t('cat1')]: '#1E3A5F',
+    [t('cat2')]: '#C62828',
+    [t('cat3')]: '#7B1FA2',
+    [t('cat4')]: '#2E7D32',
+    [t('cat5')]: '#1565C0',
+    [t('cat6')]: '#E65100',
+  };
+
+  const sampleNotes = [
+    { id: 1, title: t('n1Title'), excerpt: t('n1Excerpt'), category: t('cat1'), date: 'Mar 26, 2026', tags: t.raw('n1Tags') as string[] },
+    { id: 2, title: t('n2Title'), excerpt: t('n2Excerpt'), category: t('cat2'), date: 'Mar 25, 2026', tags: t.raw('n2Tags') as string[] },
+    { id: 3, title: t('n3Title'), excerpt: t('n3Excerpt'), category: t('cat4'), date: 'Mar 24, 2026', tags: t.raw('n3Tags') as string[] },
+    { id: 4, title: t('n4Title'), excerpt: t('n4Excerpt'), category: t('cat5'), date: 'Mar 23, 2026', tags: t.raw('n4Tags') as string[] },
+    { id: 5, title: t('n5Title'), excerpt: t('n5Excerpt'), category: t('cat3'), date: 'Mar 22, 2026', tags: t.raw('n5Tags') as string[] },
+    { id: 6, title: t('n6Title'), excerpt: t('n6Excerpt'), category: t('cat6'), date: 'Mar 20, 2026', tags: t.raw('n6Tags') as string[] },
+  ];
+
   const [search, setSearch] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState(t('all'));
   const [showModal, setShowModal] = useState(false);
-  const [newNote, setNewNote] = useState({ title: '', category: 'Contract Law', content: '', tags: '' });
+  const [newNote, setNewNote] = useState({ title: '', category: t('cat1'), content: '', tags: '' });
 
   const filtered = sampleNotes.filter(n => {
     const matchesSearch = n.title.toLowerCase().includes(search.toLowerCase()) ||
       n.excerpt.toLowerCase().includes(search.toLowerCase());
-    const matchesCat = selectedCategory === 'All' || n.category === selectedCategory;
+    const matchesCat = selectedCategory === t('all') || n.category === selectedCategory;
     return matchesSearch && matchesCat;
   });
 
@@ -89,8 +44,8 @@ export default function NotesPage() {
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
         <div>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--foreground)', letterSpacing: '-0.02em' }}>My Notes</h1>
-          <p style={{ color: 'var(--foreground-muted)', fontSize: '0.9rem', marginTop: '4px' }}>{sampleNotes.length} notes across {categories.length - 1} categories</p>
+          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--foreground)', letterSpacing: '-0.02em' }}>{t('title')}</h1>
+          <p style={{ color: 'var(--foreground-muted)', fontSize: '0.9rem', marginTop: '4px' }}>{t('subtitle', { notesCount: sampleNotes.length, categoriesCount: categories.length - 1 })}</p>
         </div>
         <button
           onClick={() => setShowModal(true)}
@@ -109,7 +64,7 @@ export default function NotesPage() {
             boxShadow: '0 4px 14px rgba(30,58,95,0.3)',
           }}
         >
-          <Plus size={17} /> New Note
+          <Plus size={17} /> {t('newNote')}
         </button>
       </div>
 
@@ -120,7 +75,7 @@ export default function NotesPage() {
           type="text"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          placeholder="Search notes..."
+          placeholder={t('searchPlaceholder')}
           style={{
             width: '100%',
             padding: '11px 14px 11px 40px',
@@ -219,9 +174,14 @@ export default function NotesPage() {
                     <Tag size={9} /> {tag}
                   </span>
                 ))}
+                {note.tags.length > 2 && (
+                  <span style={{ background: 'var(--surface-2)', color: 'var(--foreground-muted)', fontSize: '0.7rem', padding: '3px 8px', borderRadius: '100px' }}>
+                    +{note.tags.length - 2} {t('more')}
+                  </span>
+                )}
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--foreground-muted)', fontSize: '0.72rem' }}>
-                <FileText size={11} /> {note.keyPoints} points
+                <FileText size={11} /> {note.tags.length} points
               </div>
             </div>
           </div>
@@ -230,8 +190,8 @@ export default function NotesPage() {
         {filtered.length === 0 && (
           <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '60px', color: 'var(--foreground-muted)' }}>
             <FileText size={40} style={{ margin: '0 auto 12px', opacity: 0.3 }} />
-            <div style={{ fontSize: '1rem', fontWeight: 600 }}>No notes found</div>
-            <div style={{ fontSize: '0.85rem', marginTop: '4px' }}>Try a different search or category</div>
+            <div style={{ fontSize: '1rem', fontWeight: 600 }}>{t('noNotesFoundTitle')}</div>
+            <div style={{ fontSize: '0.85rem', marginTop: '4px' }}>{t('noNotesFoundSubtitle')}</div>
           </div>
         )}
       </div>
@@ -252,7 +212,7 @@ export default function NotesPage() {
             position: 'relative',
           }} onClick={e => e.stopPropagation()}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-              <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--foreground)' }}>New Note</h2>
+              <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--foreground)' }}>{t('modalTitle')}</h2>
               <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--foreground-muted)', display: 'flex' }}>
                 <X size={20} />
               </button>
@@ -260,33 +220,33 @@ export default function NotesPage() {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div>
-                <label style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--foreground)', display: 'block', marginBottom: '6px' }}>Title</label>
+                <label style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--foreground)', display: 'block', marginBottom: '6px' }}>{t('modalTitleInput')}</label>
                 <input type="text" value={newNote.title} onChange={e => setNewNote({ ...newNote, title: e.target.value })}
-                  placeholder="Note title..." style={{ width: '100%', padding: '10px 14px', background: 'var(--surface-2)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--foreground)', fontSize: '0.875rem', outline: 'none', boxSizing: 'border-box' }}
+                  placeholder={t('titlePlaceholder')} style={{ width: '100%', padding: '10px 14px', background: 'var(--surface-2)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--foreground)', fontSize: '0.875rem', outline: 'none', boxSizing: 'border-box' }}
                   onFocus={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--primary)'}
                   onBlur={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'}
                 />
               </div>
               <div>
-                <label style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--foreground)', display: 'block', marginBottom: '6px' }}>Category</label>
+                <label style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--foreground)', display: 'block', marginBottom: '6px' }}>{t('category')}</label>
                 <select value={newNote.category} onChange={e => setNewNote({ ...newNote, category: e.target.value })}
                   style={{ width: '100%', padding: '10px 14px', background: 'var(--surface-2)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--foreground)', fontSize: '0.875rem', outline: 'none', boxSizing: 'border-box' }}>
-                  {categories.filter(c => c !== 'All').map(c => <option key={c} value={c}>{c}</option>)}
+                  {categories.filter(c => c !== t('all')).map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
               <div>
-                <label style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--foreground)', display: 'block', marginBottom: '6px' }}>Content</label>
+                <label style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--foreground)', display: 'block', marginBottom: '6px' }}>{t('content')}</label>
                 <textarea value={newNote.content} onChange={e => setNewNote({ ...newNote, content: e.target.value })}
-                  placeholder="Write your note..." rows={5}
+                  placeholder={t('contentPlaceholder')} rows={5}
                   style={{ width: '100%', padding: '10px 14px', background: 'var(--surface-2)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--foreground)', fontSize: '0.875rem', outline: 'none', resize: 'vertical', fontFamily: 'inherit', boxSizing: 'border-box' }}
                   onFocus={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--primary)'}
                   onBlur={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'}
                 />
               </div>
               <div>
-                <label style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--foreground)', display: 'block', marginBottom: '6px' }}>Tags (comma-separated)</label>
+                <label style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--foreground)', display: 'block', marginBottom: '6px' }}>{t('tags')}</label>
                 <input type="text" value={newNote.tags} onChange={e => setNewNote({ ...newNote, tags: e.target.value })}
-                  placeholder="contract, law, case..." style={{ width: '100%', padding: '10px 14px', background: 'var(--surface-2)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--foreground)', fontSize: '0.875rem', outline: 'none', boxSizing: 'border-box' }}
+                  placeholder={t('tagsPlaceholder')} style={{ width: '100%', padding: '10px 14px', background: 'var(--surface-2)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--foreground)', fontSize: '0.875rem', outline: 'none', boxSizing: 'border-box' }}
                   onFocus={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--primary)'}
                   onBlur={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'}
                 />

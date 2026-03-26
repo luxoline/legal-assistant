@@ -3,37 +3,40 @@
 import Link from 'next/link';
 import { Search, FileText, BookOpen, TrendingUp, Clock, ArrowRight, Sparkles, Scale } from 'lucide-react';
 
-const stats = [
-  { label: 'Research Sessions', value: '24', change: '+3 this week', icon: Search, color: '#1E3A5F' },
-  { label: 'Saved Notes', value: '47', change: '+12 this month', icon: FileText, color: '#C9A84C' },
-  { label: 'Knowledge Items', value: '89', change: '+8 this week', icon: BookOpen, color: '#2E7D32' },
-  { label: 'Study Streak', value: '7 days', change: 'Keep it up!', icon: TrendingUp, color: '#7B1FA2' },
-];
-
-const recentActivity = [
-  { type: 'research', title: 'Contract Law — Offer and Acceptance', time: '2 hours ago', color: '#1E3A5F' },
-  { type: 'note', title: 'Criminal Intent: Mens Rea Overview', time: 'Yesterday', color: '#C9A84C' },
-  { type: 'research', title: 'EU GDPR Article 17 — Right to Erasure', time: '2 days ago', color: '#1E3A5F' },
-  { type: 'note', title: 'Tort Law: Negligence Elements', time: '3 days ago', color: '#2E7D32' },
-  { type: 'research', title: 'Constitutional Rights — Freedom of Speech', time: '4 days ago', color: '#7B1FA2' },
-];
-
-const quickActions = [
-  { href: '/dashboard/research', icon: Search, label: 'New Research', description: 'Ask a legal question', color: '#1E3A5F' },
-  { href: '/dashboard/notes', icon: FileText, label: 'New Note', description: 'Save research findings', color: '#C9A84C' },
-  { href: '/dashboard/knowledge', icon: BookOpen, label: 'Knowledge Base', description: 'Browse your library', color: '#2E7D32' },
-];
+import { useTranslations } from 'next-intl';
 
 export default function DashboardPage() {
+  const t = useTranslations('Dashboard');
+
+  const stats = [
+    { label: t('researchSessions'), value: '24', change: t('stat1Change'), icon: Search, color: '#1E3A5F' },
+    { label: t('savedNotes'), value: '47', change: t('stat2Change'), icon: FileText, color: '#C9A84C' },
+    { label: t('knowledgeItems'), value: '89', change: t('stat3Change'), icon: BookOpen, color: '#2E7D32' },
+    { label: t('studyStreak'), value: `7 ${t('days')}`, change: t('stat4Change'), icon: TrendingUp, color: '#7B1FA2' },
+  ];
+
+  const recentActivity = [
+    { type: t('typeResearch'), title: t('act1Title'), time: t('act1Time'), color: '#1E3A5F' },
+    { type: t('typeNote'), title: t('act2Title'), time: t('act2Time'), color: '#C9A84C' },
+    { type: t('typeResearch'), title: t('act3Title'), time: t('act3Time'), color: '#1E3A5F' },
+    { type: t('typeNote'), title: t('act4Title'), time: t('act4Time'), color: '#2E7D32' },
+    { type: t('typeResearch'), title: t('act5Title'), time: t('act5Time'), color: '#7B1FA2' },
+  ];
+
+  const quickActions = [
+    { href: '/dashboard/research', icon: Search, label: t('qa1Label'), description: t('qa1Desc'), color: '#1E3A5F' },
+    { href: '/dashboard/notes', icon: FileText, label: t('qa2Label'), description: t('qa2Desc'), color: '#C9A84C' },
+    { href: '/dashboard/knowledge', icon: BookOpen, label: t('qa3Label'), description: t('qa3Desc'), color: '#2E7D32' },
+  ];
   return (
     <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
       {/* Header */}
       <div style={{ marginBottom: '32px' }}>
         <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--foreground)', letterSpacing: '-0.02em', marginBottom: '6px' }}>
-          Welcome back, John 👋
+          {t('welcome')}
         </h1>
         <p style={{ color: 'var(--foreground-muted)', fontSize: '0.95rem' }}>
-          Thursday, 26 March 2026 — Here&apos;s your research overview.
+          {t('dateDesc')}
         </p>
       </div>
 
@@ -55,8 +58,8 @@ export default function DashboardPage() {
             <Sparkles size={22} color="#F0C060" />
           </div>
           <div>
-            <div style={{ color: '#fff', fontWeight: 700, fontSize: '1rem' }}>AI Tools Coming Soon</div>
-            <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem' }}>Advanced legal analysis & document processing — in development</div>
+            <div style={{ color: '#fff', fontWeight: 700, fontSize: '1rem' }}>{t('aiComingSoon')}</div>
+            <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem' }}>{t('aiDesc')}</div>
           </div>
         </div>
         <Link href="/dashboard/research" style={{
@@ -72,7 +75,7 @@ export default function DashboardPage() {
           gap: '6px',
           whiteSpace: 'nowrap',
         }}>
-          Try Research <ArrowRight size={15} />
+          {t('tryResearch')} <ArrowRight size={15} />
         </Link>
       </div>
 
@@ -109,9 +112,9 @@ export default function DashboardPage() {
         {/* Recent Activity */}
         <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden', boxShadow: 'var(--shadow)' }}>
           <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--foreground)' }}>Recent Activity</h2>
+            <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--foreground)' }}>{t('recentActivity')}</h2>
             <Link href="/dashboard/research" style={{ fontSize: '0.8rem', color: 'var(--primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
-              View all <ArrowRight size={13} />
+              {t('viewAll')} <ArrowRight size={13} />
             </Link>
           </div>
           {recentActivity.map((a, i) => (
@@ -157,7 +160,7 @@ export default function DashboardPage() {
 
         {/* Quick Actions */}
         <div style={{ minWidth: '200px' }}>
-          <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--foreground)', marginBottom: '12px' }}>Quick Actions</h2>
+          <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--foreground)', marginBottom: '12px' }}>{t('quickActions')}</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {quickActions.map((a, i) => {
               const Icon = a.icon;
@@ -198,10 +201,10 @@ export default function DashboardPage() {
             }}>
               <div style={{ display: 'flex', gap: '8px', marginBottom: '6px' }}>
                 <Scale size={14} color="var(--accent)" style={{ flexShrink: 0, marginTop: '2px' }} />
-                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent)' }}>Disclaimer</span>
+                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent)' }}>{t('disclaimerTitle')}</span>
               </div>
               <p style={{ fontSize: '0.72rem', color: 'var(--foreground-muted)', lineHeight: 1.5 }}>
-                LexAI is not a substitute for professional legal advice. Always consult a qualified lawyer.
+                {t('disclaimerText')}
               </p>
             </div>
           </div>

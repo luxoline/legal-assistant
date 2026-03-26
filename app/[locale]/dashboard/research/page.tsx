@@ -2,29 +2,32 @@
 
 import { useState } from 'react';
 import { Send, Bot, User, Sparkles, Scale, Clock, ChevronRight } from 'lucide-react';
-
-const pastSessions = [
-  { title: 'Contract Law — Offer & Acceptance', date: '2 hours ago', messages: 8 },
-  { title: 'Criminal Intent: Mens Rea', date: 'Yesterday', messages: 5 },
-  { title: 'EU GDPR Article 17', date: '2 days ago', messages: 12 },
-  { title: 'Negligence & Duty of Care', date: '3 days ago', messages: 6 },
-  { title: 'Constitutional Rights Overview', date: '1 week ago', messages: 14 },
-];
-
-const suggestions = [
-  'What is the difference between civil and criminal liability?',
-  'Explain the elements of a valid contract',
-  'What are fundamental rights under constitutional law?',
-  'How does burden of proof work in criminal cases?',
-];
+import { useTranslations } from 'next-intl';
 
 type Message = { role: 'user' | 'assistant'; content: string; time: string };
 
 export default function ResearchPage() {
+  const t = useTranslations('Research');
+
+  const pastSessions = [
+    { title: t('ps1Title'), date: t('ps1Time'), messages: 8 },
+    { title: t('ps2Title'), date: t('ps2Time'), messages: 5 },
+    { title: t('ps3Title'), date: t('ps3Time'), messages: 12 },
+    { title: t('ps4Title'), date: t('ps4Time'), messages: 6 },
+    { title: t('ps5Title'), date: t('ps5Time'), messages: 14 },
+  ];
+
+  const suggestions = [
+    t('sug1'),
+    t('sug2'),
+    t('sug3'),
+    t('sug4'),
+  ];
+
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: "Hello! I'm LexAI, your legal research assistant. I can help you research legal principles, analyze case law concepts, and organize your findings. Note: AI integration is coming soon — for now, I can provide structured legal information.\n\nWhat legal topic would you like to explore today?",
+      content: t('assistantHello'),
       time: 'now',
     },
   ]);
@@ -42,7 +45,7 @@ export default function ResearchPage() {
     setTimeout(() => {
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: '🔄 **AI Integration Coming Soon**\n\nThis is a placeholder response. Once AI tools are integrated, I will provide:\n\n• 🧾 Structured legal analysis\n• ⚖️ Relevant legal principles\n• ⚠️ Risk assessment\n• 📌 Suggested next steps\n\n*Not legal advice — always consult a qualified professional.*',
+        content: t('placeholderResponse'),
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       }]);
     }, 800);
@@ -64,7 +67,7 @@ export default function ResearchPage() {
       }}>
         <div style={{ padding: '16px', borderBottom: '1px solid var(--border)' }}>
           <button
-            onClick={() => setMessages([{ role: 'assistant', content: "Hello! Starting a new research session. What legal topic can I help you with?", time: 'now' }])}
+            onClick={() => setMessages([{ role: 'assistant', content: t('assistantNew'), time: 'now' }])}
             style={{
               width: '100%',
               background: 'linear-gradient(135deg, var(--primary), var(--primary-light))',
@@ -81,11 +84,11 @@ export default function ResearchPage() {
               gap: '6px',
             }}
           >
-            <Sparkles size={14} /> New Research
+            <Sparkles size={14} /> {t('btnNewResearch')}
           </button>
         </div>
         <div style={{ flex: 1, overflowY: 'auto', padding: '8px' }}>
-          <p style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--foreground-muted)', letterSpacing: '0.08em', textTransform: 'uppercase', padding: '8px 8px 4px' }}>Past Sessions</p>
+          <p style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--foreground-muted)', letterSpacing: '0.08em', textTransform: 'uppercase', padding: '8px 8px 4px' }}>{t('pastSessions')}</p>
           {pastSessions.map((s, i) => (
             <button key={i} style={{
               width: '100%',
@@ -125,11 +128,11 @@ export default function ResearchPage() {
             <Scale size={16} color="#fff" />
           </div>
           <div>
-            <div style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--foreground)' }}>LexAI Research Assistant</div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--foreground-muted)' }}>AI integration coming soon · Not legal advice</div>
+            <div style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--foreground)' }}>{t('assistantTitle')}</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--foreground-muted)' }}>{t('assistantSub')}</div>
           </div>
           <div style={{ marginLeft: 'auto', background: 'rgba(201,168,76,0.15)', color: 'var(--accent)', fontSize: '0.7rem', fontWeight: 700, padding: '4px 10px', borderRadius: '100px', border: '1px solid var(--accent)' }}>
-            BETA
+            {t('beta')}
           </div>
         </div>
 
@@ -198,7 +201,7 @@ export default function ResearchPage() {
               value={input}
               onChange={e => setInput(e.target.value)}
               onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }}
-              placeholder="Ask a legal question... (Enter to send, Shift+Enter for new line)"
+              placeholder={t('inputPlaceholder')}
               rows={2}
               style={{
                 flex: 1,
@@ -237,7 +240,7 @@ export default function ResearchPage() {
               onMouseOver={e => (e.currentTarget as HTMLElement).style.opacity = '0.9'}
               onMouseOut={e => (e.currentTarget as HTMLElement).style.opacity = '1'}
             >
-              <Send size={16} /> Send
+              <Send size={16} /> {t('btnSend')}
             </button>
           </div>
         </div>

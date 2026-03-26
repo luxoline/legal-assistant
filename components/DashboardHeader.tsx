@@ -3,8 +3,10 @@
 import { useTheme } from 'next-themes';
 import { Bell, Moon, Sun, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 export default function DashboardHeader() {
+  const t = useTranslations('DashboardHeader');
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -28,7 +30,7 @@ export default function DashboardHeader() {
         <Search size={15} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--foreground-muted)' }} />
         <input
           type="text"
-          placeholder="Search research, notes..."
+          placeholder={t('searchPlaceholder')}
           style={{
             width: '100%',
             padding: '9px 14px 9px 36px',
@@ -76,7 +78,7 @@ export default function DashboardHeader() {
               color: 'var(--foreground-muted)',
               transition: 'color 0.2s',
             }}
-            title="Toggle theme"
+            title={t('toggleTheme')}
           >
             {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
           </button>

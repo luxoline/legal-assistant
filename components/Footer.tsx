@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import { Scale, MessageCircle, Code2, Briefcase } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export default function Footer() {
+  const t = useTranslations('Footer');
   return (
     <footer style={{
       background: 'var(--surface)',
@@ -21,7 +23,7 @@ export default function Footer() {
               </span>
             </Link>
             <p style={{ color: 'var(--foreground-muted)', fontSize: '0.875rem', lineHeight: 1.6 }}>
-              Intelligent legal research for the modern age.
+              {t('brandDesc')}
             </p>
             <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
               {[MessageCircle, Code2, Briefcase].map((Icon, i) => (
@@ -44,32 +46,32 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--foreground)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '16px' }}>Product</h4>
-            {['Features', 'Use Cases', 'Pricing', 'Changelog'].map(item => (
+            <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--foreground)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '16px' }}>{t('product')}</h4>
+            {['features', 'useCases', 'pricing', 'changelog'].map(item => (
               <a key={item} href="#" style={{ display: 'block', color: 'var(--foreground-muted)', textDecoration: 'none', fontSize: '0.9rem', marginBottom: '10px', transition: 'color 0.2s' }}
                 onMouseOver={e => (e.currentTarget as HTMLElement).style.color = 'var(--primary)'}
                 onMouseOut={e => (e.currentTarget as HTMLElement).style.color = 'var(--foreground-muted)'}
-              >{item}</a>
+              >{t(item as any)}</a>
             ))}
           </div>
 
           <div>
-            <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--foreground)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '16px' }}>Resources</h4>
-            {['Documentation', 'Blog', 'Legal Glossary', 'Case Studies'].map(item => (
+            <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--foreground)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '16px' }}>{t('resources')}</h4>
+            {['documentation', 'blog', 'legalGlossary', 'caseStudies'].map(item => (
               <a key={item} href="#" style={{ display: 'block', color: 'var(--foreground-muted)', textDecoration: 'none', fontSize: '0.9rem', marginBottom: '10px', transition: 'color 0.2s' }}
                 onMouseOver={e => (e.currentTarget as HTMLElement).style.color = 'var(--primary)'}
                 onMouseOut={e => (e.currentTarget as HTMLElement).style.color = 'var(--foreground-muted)'}
-              >{item}</a>
+              >{t(item as any)}</a>
             ))}
           </div>
 
           <div>
-            <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--foreground)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '16px' }}>Legal</h4>
-            {['Privacy Policy', 'Terms of Service', 'Cookie Policy', 'Disclaimer'].map(item => (
+            <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--foreground)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '16px' }}>{t('legal')}</h4>
+            {['privacyPolicy', 'termsOfService', 'cookiePolicy', 'disclaimer'].map(item => (
               <a key={item} href="#" style={{ display: 'block', color: 'var(--foreground-muted)', textDecoration: 'none', fontSize: '0.9rem', marginBottom: '10px', transition: 'color 0.2s' }}
                 onMouseOver={e => (e.currentTarget as HTMLElement).style.color = 'var(--primary)'}
                 onMouseOut={e => (e.currentTarget as HTMLElement).style.color = 'var(--foreground-muted)'}
-              >{item}</a>
+              >{t(item as any)}</a>
             ))}
           </div>
         </div>
@@ -84,10 +86,10 @@ export default function Footer() {
           gap: '12px',
         }}>
           <p style={{ color: 'var(--foreground-muted)', fontSize: '0.8rem' }}>
-            © 2026 LexAI. All rights reserved.
+            {t('rights')}
           </p>
           <p style={{ color: 'var(--foreground-muted)', fontSize: '0.8rem' }}>
-            ⚖️ Not a substitute for professional legal advice.
+            {t('notAdvice')}
           </p>
         </div>
       </div>

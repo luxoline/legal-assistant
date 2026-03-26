@@ -5,8 +5,10 @@ import { useTheme } from 'next-themes';
 import { Moon, Sun, Scale, Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import LanguageSwitcher from './LanguageSwitcher';
+import { useTranslations } from 'next-intl';
 
 export default function Navbar() {
+  const t = useTranslations('Navbar');
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -45,17 +47,17 @@ export default function Navbar() {
             <Link href="/#features" style={{ color: 'var(--foreground-muted)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 500, transition: 'color 0.2s' }}
               onMouseOver={e => (e.currentTarget.style.color = 'var(--primary)')}
               onMouseOut={e => (e.currentTarget.style.color = 'var(--foreground-muted)')}>
-              Features
+              {t('features')}
             </Link>
             <Link href="/#use-cases" style={{ color: 'var(--foreground-muted)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 500, transition: 'color 0.2s' }}
               onMouseOver={e => (e.currentTarget.style.color = 'var(--primary)')}
               onMouseOut={e => (e.currentTarget.style.color = 'var(--foreground-muted)')}>
-              Use Cases
+              {t('useCases')}
             </Link>
             <Link href="/login" style={{ color: 'var(--foreground-muted)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 500, transition: 'color 0.2s' }}
               onMouseOver={e => (e.currentTarget.style.color = 'var(--primary)')}
               onMouseOut={e => (e.currentTarget.style.color = 'var(--foreground-muted)')}>
-              Login
+              {t('login')}
             </Link>
           </div>
 
@@ -100,7 +102,7 @@ export default function Navbar() {
             }}
               onMouseOver={e => (e.currentTarget.style.opacity = '0.9')}
               onMouseOut={e => (e.currentTarget.style.opacity = '1')}>
-              Get Started
+              {t('getStarted')}
             </Link>
 
             {/* Mobile menu button */}
@@ -123,9 +125,9 @@ export default function Navbar() {
             flexDirection: 'column',
             gap: '12px',
           }}>
-            <Link href="/#features" style={{ color: 'var(--foreground-muted)', textDecoration: 'none', fontSize: '0.95rem', padding: '8px 0' }} onClick={() => setMenuOpen(false)}>Features</Link>
-            <Link href="/#use-cases" style={{ color: 'var(--foreground-muted)', textDecoration: 'none', fontSize: '0.95rem', padding: '8px 0' }} onClick={() => setMenuOpen(false)}>Use Cases</Link>
-            <Link href="/login" style={{ color: 'var(--foreground-muted)', textDecoration: 'none', fontSize: '0.95rem', padding: '8px 0' }} onClick={() => setMenuOpen(false)}>Login</Link>
+            <Link href="/#features" style={{ color: 'var(--foreground-muted)', textDecoration: 'none', fontSize: '0.95rem', padding: '8px 0' }} onClick={() => setMenuOpen(false)}>{t('features')}</Link>
+            <Link href="/#use-cases" style={{ color: 'var(--foreground-muted)', textDecoration: 'none', fontSize: '0.95rem', padding: '8px 0' }} onClick={() => setMenuOpen(false)}>{t('useCases')}</Link>
+            <Link href="/login" style={{ color: 'var(--foreground-muted)', textDecoration: 'none', fontSize: '0.95rem', padding: '8px 0' }} onClick={() => setMenuOpen(false)}>{t('login')}</Link>
           </div>
         )}
       </div>

@@ -3,8 +3,10 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Scale, Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export default function LoginPage() {
+  const t = useTranslations('Login');
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
 
@@ -46,10 +48,10 @@ export default function LoginPage() {
           boxShadow: 'var(--shadow-lg)',
         }}>
           <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--foreground)', marginBottom: '6px', letterSpacing: '-0.02em' }}>
-            {isSignUp ? 'Create account' : 'Welcome back'}
+            {isSignUp ? t('createAccount') : t('welcomeBack')}
           </h1>
           <p style={{ color: 'var(--foreground-muted)', fontSize: '0.9rem', marginBottom: '28px' }}>
-            {isSignUp ? 'Start your legal research journey' : 'Sign in to your LexAI account'}
+            {isSignUp ? t('createAccountDesc') : t('welcomeBackDesc')}
           </p>
 
           {/* OAuth */}
@@ -79,13 +81,13 @@ export default function LoginPage() {
               <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05" />
               <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335" />
             </svg>
-            Continue with Google
+            {t('continueGoogle')}
           </button>
 
           {/* Divider */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
             <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
-            <span style={{ color: 'var(--foreground-muted)', fontSize: '0.8rem' }}>or</span>
+            <span style={{ color: 'var(--foreground-muted)', fontSize: '0.8rem' }}>{t('or')}</span>
             <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
           </div>
 
@@ -93,10 +95,10 @@ export default function LoginPage() {
           <form onSubmit={e => { e.preventDefault(); window.location.href = '/dashboard'; }}>
             {isSignUp && (
               <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--foreground)', marginBottom: '6px' }}>Full Name</label>
+                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--foreground)', marginBottom: '6px' }}>{t('fullName')}</label>
                 <input
                   type="text"
-                  placeholder="John Doe"
+                  placeholder={t('fullNamePlaceholder')}
                   style={{
                     width: '100%',
                     padding: '11px 14px',
@@ -116,12 +118,12 @@ export default function LoginPage() {
             )}
 
             <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--foreground)', marginBottom: '6px' }}>Email</label>
+              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--foreground)', marginBottom: '6px' }}>{t('email')}</label>
               <div style={{ position: 'relative' }}>
                 <Mail size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--foreground-muted)' }} />
                 <input
                   type="email"
-                  placeholder="you@example.com"
+                  placeholder={t('emailPlaceholder')}
                   style={{
                     width: '100%',
                     padding: '11px 14px 11px 38px',
@@ -142,14 +144,14 @@ export default function LoginPage() {
 
             <div style={{ marginBottom: '24px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-                <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--foreground)' }}>Password</label>
-                {!isSignUp && <a href="#" style={{ fontSize: '0.8rem', color: 'var(--primary)', textDecoration: 'none' }}>Forgot password?</a>}
+                <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--foreground)' }}>{t('password')}</label>
+                {!isSignUp && <a href="#" style={{ fontSize: '0.8rem', color: 'var(--primary)', textDecoration: 'none' }}>{t('forgotPassword')}</a>}
               </div>
               <div style={{ position: 'relative' }}>
                 <Lock size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--foreground-muted)' }} />
                 <input
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="••••••••"
+                  placeholder={t('passwordPlaceholder')}
                   style={{
                     width: '100%',
                     padding: '11px 40px 11px 38px',
@@ -207,27 +209,27 @@ export default function LoginPage() {
               onMouseOver={e => (e.currentTarget as HTMLElement).style.opacity = '0.9'}
               onMouseOut={e => (e.currentTarget as HTMLElement).style.opacity = '1'}
             >
-              {isSignUp ? 'Create Account' : 'Sign In'} <ArrowRight size={18} />
+              {isSignUp ? t('createAccountBtn') : t('signInBtn')} <ArrowRight size={18} />
             </button>
           </form>
 
           {/* Toggle */}
           <p style={{ textAlign: 'center', marginTop: '20px', color: 'var(--foreground-muted)', fontSize: '0.875rem' }}>
-            {isSignUp ? 'Already have an account? ' : "Don't have an account? "}
+            {isSignUp ? t('alreadyHave') : t('dontHave')}
             <button
               onClick={() => setIsSignUp(!isSignUp)}
               style={{ background: 'none', border: 'none', color: 'var(--primary)', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem', textDecoration: 'underline' }}
             >
-              {isSignUp ? 'Sign In' : 'Sign Up'}
+              {isSignUp ? t('signIn') : t('signUp')}
             </button>
           </p>
         </div>
 
         {/* Disclaimer */}
         <p style={{ textAlign: 'center', marginTop: '16px', color: 'var(--foreground-muted)', fontSize: '0.75rem' }}>
-          By continuing, you agree to our{' '}
-          <a href="#" style={{ color: 'var(--primary)' }}>Terms</a> &amp;{' '}
-          <a href="#" style={{ color: 'var(--primary)' }}>Privacy Policy</a>.
+          {t('byContinuing')}
+          <a href="#" style={{ color: 'var(--primary)' }}>{t('terms')}</a>{t('and')}
+          <a href="#" style={{ color: 'var(--primary)' }}>{t('privacy')}</a>.
         </p>
       </div>
     </div>

@@ -4,15 +4,17 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Scale, LayoutDashboard, Search, FileText, BookOpen, Settings, LogOut, ChevronLeft } from 'lucide-react';
 import { useState } from 'react';
-
-const navLinks = [
-  { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '/dashboard/research', icon: Search, label: 'Legal Research' },
-  { href: '/dashboard/notes', icon: FileText, label: 'My Notes' },
-  { href: '/dashboard/knowledge', icon: BookOpen, label: 'Knowledge Base' },
-];
+import { useTranslations } from 'next-intl';
 
 export default function Sidebar() {
+  const t = useTranslations('Sidebar');
+
+  const navLinks = [
+    { href: '/dashboard', icon: LayoutDashboard, label: t('dashboard') },
+    { href: '/dashboard/research', icon: Search, label: t('legalResearch') },
+    { href: '/dashboard/notes', icon: FileText, label: t('myNotes') },
+    { href: '/dashboard/knowledge', icon: BookOpen, label: t('knowledgeBase') },
+  ];
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
 
@@ -77,7 +79,7 @@ export default function Sidebar() {
       <nav style={{ flex: 1, padding: '12px 10px' }}>
         {!collapsed && (
           <p style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--foreground-muted)', letterSpacing: '0.1em', textTransform: 'uppercase', padding: '8px 10px', marginBottom: '4px' }}>
-            Navigation
+            {t('navigation')}
           </p>
         )}
         {navLinks.map(({ href, icon: Icon, label }) => {
@@ -140,13 +142,13 @@ export default function Sidebar() {
           }}>JD</div>
           {!collapsed && (
             <div style={{ overflow: 'hidden' }}>
-              <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--foreground)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>John Doe</div>
-              <div style={{ fontSize: '0.7rem', color: 'var(--foreground-muted)' }}>Law Student</div>
+              <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--foreground)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t('name')}</div>
+              <div style={{ fontSize: '0.7rem', color: 'var(--foreground-muted)' }}>{t('role')}</div>
             </div>
           )}
         </div>
 
-        <Link href="/settings" title={collapsed ? 'Settings' : undefined} style={{
+        <Link href="/settings" title={collapsed ? t('settings') : undefined} style={{
           display: 'flex', alignItems: 'center', gap: '10px', padding: collapsed ? '10px' : '10px 12px',
           borderRadius: '10px', textDecoration: 'none', color: 'var(--foreground-muted)', fontSize: '0.875rem',
           marginBottom: '4px', transition: 'background 0.2s', justifyContent: collapsed ? 'center' : 'flex-start',
@@ -155,10 +157,10 @@ export default function Sidebar() {
           onMouseOut={e => (e.currentTarget as HTMLElement).style.background = 'transparent'}
         >
           <Settings size={18} style={{ flexShrink: 0 }} />
-          {!collapsed && <span>Settings</span>}
+          {!collapsed && <span>{t('settings')}</span>}
         </Link>
 
-        <Link href="/login" title={collapsed ? 'Log out' : undefined} style={{
+        <Link href="/login" title={collapsed ? t('logout') : undefined} style={{
           display: 'flex', alignItems: 'center', gap: '10px', padding: collapsed ? '10px' : '10px 12px',
           borderRadius: '10px', textDecoration: 'none', color: '#EF4444', fontSize: '0.875rem',
           transition: 'background 0.2s', justifyContent: collapsed ? 'center' : 'flex-start',
@@ -167,7 +169,7 @@ export default function Sidebar() {
           onMouseOut={e => (e.currentTarget as HTMLElement).style.background = 'transparent'}
         >
           <LogOut size={18} style={{ flexShrink: 0 }} />
-          {!collapsed && <span>Log Out</span>}
+          {!collapsed && <span>{t('logout')}</span>}
         </Link>
       </div>
     </aside>
